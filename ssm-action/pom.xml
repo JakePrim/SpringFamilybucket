@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.prim</groupId>
+    <artifactId>ssmshop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>ssmshop Maven Webapp</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+    <repositories>
+        <!-- 配置国内的中央仓库 优先使用 -->
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- 定义版本 -->
+        <org.springframework.version>5.2.5.RELEASE</org.springframework.version>
+        <org.mybatis.version>3.5.4</org.mybatis.version>
+        <org.mybatis.spring.version>2.0.4</org.mybatis.spring.version>
+
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- 引入servlet一个jar包 -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>8.5.50</version>
+        </dependency>
+        <!-- 引入Spring核心依赖 -->
+
+        <!-- 引入SpringAOP依赖 在spring-mvc中已经引入了spring core beans context aop依赖
+            要支持aop还需要引入aspectj依赖即可
+            主要是提供了一个java agent用于在类加载期间织入切面(Load time weaving)。并且提供了对切面语法的相关处理等基础方法，供ajc使用或者供第三方开发使用-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <!-- aspectjrt 要是提供运行时的一些注解，静态方法等等东西，通常我们要使用aspectJ的时候都要使用这个包。-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.11</version>
+        </dependency>
+        <!-- 引入Spring JDBC依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 引入Spring 事务管理依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 引入Spring 测试依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 引入SpringMVC依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 引入Spring oxm O/X Mapper。
+        O/X 映射器这个概念并不新鲜，O 代表 Object，X 代表 XML。
+        它的目的是在 Java 对象（几乎总是一个 plain old Java object，或简写为 POJO）和 XML 文档之间来回转换。
+         -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 引入mybatis依赖 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${org.mybatis.version}</version>
+        </dependency>
+        <!-- 引入Spring集成mybatis的依赖 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${org.mybatis.spring.version}</version>
+        </dependency>
+        <!-- 引入mybatis分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.miemiedev</groupId>
+            <artifactId>mybatis-paginator</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>0.9.4</version>
+        </dependency>
+        <!-- 引入jackson依赖 序列化json
+         Jackson fasterxml和codehaus的区别：
+        他们是Jackson的两大分支、也是两个版本的不同包名。
+        Jackson从2.0开始改用新的包名fasterxml；
+        1.x版本的包名是codehaus。除了包名不同，他们的Maven artifact id也不同。
+        1.x版本现在只提供bug-fix，而2.x版本还在不断开发和发布中。如果是新项目，建议直接用2x，即fasterxml jackson。
+        -->
+        <!-- jackson codehaus 版本应景不在升级了 只提供bug-fix -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.codehaus.jackson</groupId>-->
+        <!--            <artifactId>jackson-mapper-asl</artifactId>-->
+        <!--            <version>1.9.12</version>-->
+        <!--        </dependency>-->
+        <!-- jackson依赖 2.9之前的版本会有很严重的漏洞 jackson fasterxml 不用再去xml中进行配置了 直接引入即可 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.10.3</version>
+        </dependency>
+        <!-- 引入连接池依赖 -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- 引入数据库驱动依赖 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+        <!-- 引入日志依赖 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- 引入guava依赖 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+        <!-- 引入apache工具类commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+        <!-- 集合工具类 -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <!-- 时间处理jar包 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <!-- id加密解密 -->
+        <dependency>
+            <groupId>org.hashids</groupId>
+            <artifactId>hashids</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- 引入上传ftp依赖 -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <!-- 文件上传需要引入依赖 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <!-- -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <!-- 引入hibernate校验依赖 https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.4.Final</version>
+        </dependency>
+
+        <!-- 继承支付宝 -->
+    </dependencies>
+
+    <build>
+        <finalName>ssmshop</finalName>
+        <plugins>
+            <!-- plugin 根据数据库自动生成dao pojo xml 的一个插件 -->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+            <!-- 配置maven compiler 配置
+                一般情况下jar包都可以使用pom.xml来配置管理，但也有一些时候，
+                我们项目中使用了一个内部jar文件，但是这个文件我们又没有开放到maven库中.
+                我们会将文件当到我们项目WEB-INF/lib中
+                如果我们不对pom.xml进行特殊配置的话，maven打包是不会自动去引用和编译lib中的jar文件的，
+                所以需要我们修改下pom.xml文件
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-verbose</arg>
+                        <arg>-Xlint:unchecked</arg>
+                        <arg>-Xlint:deprecation</arg>
+                        <arg>-bootclasspath</arg>
+                        <arg>${env.JAVA_HOME}/jre/lib/rt.jar</arg>
+                        <arg>-extdirs</arg>
+                        <arg>${project.basedir}/src/main/webapp/WEB-INF/lib</arg>
+                    </compilerArgs>
+                </configuration>
+                <!-- 3.1 版本之前的配置 -->
+                <!--                <configuration>-->
+                <!--                    <compilerArguments>-->
+                <!--                        <exdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</exdirs>-->
+                <!--                    </compilerArguments>-->
+                <!--                </configuration>-->
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.prim.mall" annotation-config="true"/>
+
+    <!-- 启动Spring MVC注解开发模式 -->
+    <mvc:annotation-driven>
+        <!-- 设置消息的转换器 -->
+        <mvc:message-converters>
+            <!-- 对于http响应的消息文本转换 防止中文乱码 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!--             json  2.0 版本的jackson已经不需要配置了-->
+            <!--            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">-->
+            <!--                <property name="supportedMediaTypes">-->
+            <!--                    <list>-->
+            <!--                        <value>application/json;charset=UTF-8</value>-->
+            <!--                    </list>-->
+            <!--                </property>-->
+            <!--            </bean>-->
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 将图片js/css等静态资源排除在外 不通过DispatcherServlet处理 提高执行效率 -->
+    <!--    <mvc:default-servlet-handler/>-->
+
+    <!-- 跨域请求配置
+    maxAge = 3600 设置预检请求的缓存时间 put delete 非简单请求会发送一个预检请求。每一次是有两个请求会增加服务器的压力
+    maxAge 参数可以将预检请求的结果进行缓存 在小时的时间内 同样的put请求就不进行预检请求处理
+    -->
+    <mvc:cors>
+        <mvc:mapping path="/*" max-age="3600" allowed-origins="http://localhost:8080"/>
+    </mvc:cors>
+
+    <!-- 文件上传 multipart 提供的属性配置-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"/> <!-- 10m -->
+        <property name="maxInMemorySize" value="4096"/> <!-- 上传文件分配的内存块 -->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+
+
+</beans>
