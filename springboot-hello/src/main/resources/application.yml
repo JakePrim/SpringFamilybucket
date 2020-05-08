@@ -1,0 +1,18 @@
+server:
+  port: 8089 #yml 修改端口号
+
+person:
+  name: zhangsan
+  age: 19
+  sex: nan
+  isMerried: false
+#  friend:
+#    name: lisi
+#    sex: nv
+  friend: {name: lisi,sex: nv}
+#  pets:
+#    - 小狗
+#    - 小猫
+#    - 小驴
+  pets: [小猫,小狗,小驴]
+  friends: [{name: lisi,sex: nv},{name: wangwu,sex: nan}]
